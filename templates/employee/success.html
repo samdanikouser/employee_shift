@@ -1,0 +1,20 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+{% if user.is_authenticated %}
+<head>
+    <title>{% block title %}Checkin in{% endblock %}</title>
+    {% block script %}
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    {% endblock script %}
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class=" text-center mt-5 ">
+        <h1>Hi {{employee.full_name}} you have checked in successfully</h1>
+    </div>
+</div>
+{% endblock content %}
+</body>
+{% endif %}

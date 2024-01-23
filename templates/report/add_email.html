@@ -1,0 +1,105 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+<html>
+<head>
+    <title>List</title>
+    {% block title %}
+    List
+    {% endblock title %}
+    {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/table.css' %}">
+    {% endblock script %}
+</head>
+
+<body>
+{% block content %}
+<section class="intro">
+    <div class="h-100">
+        <div class="mask d-flex align-items-center h-30">
+            {% if user.is_authenticated %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card bg-light text-black">
+                            <div class="card-body">
+                                <form action="/report/" method="POST">
+                                    {% csrf_token %}
+                                    {% if only_mail %}
+                                    <div class="mb-3">
+                                        <label for="from_dates">Select Filter From Date</label>
+                                        <input id="from_dates" name="from_dates" type="date" class="form-control">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="to_dates">Select Filter To Date</label>
+                                        <input id="to_dates" name="to_dates" type="date" class="form-control">
+                                    </div>
+                                     <!--Email-->
+                                    <div class="mb-3">
+                                        <label for="email">ADD Email</label>
+                                        <input
+                                                id="email"
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter email"
+                                                name="email"
+                                        />
+                                    </div>
+                                         <!--Add Email Button-->
+                                    <div class="container text-center">
+                                        <button class="btn" formaction="/email/" style="background-color: #39B5E0;">
+                                            SEND REPORT TO EMAIL
+                                        </button>
+                                    </div>
+                                    {% else %}
+                                    <input
+                                            id="from_date"
+                                            type="date"
+                                            hidden
+                                            name="from_date"
+                                            value="{{from_date}}"
+                                    />
+                                    <input
+                                            id="to_date"
+                                            type="date"
+                                            hidden
+                                            name="to_date"
+                                            value="{{to_date}}"
+                                    />
+                                    <div class="mb-3">
+                                        <label for="email">ADD Email</label>
+                                        <input
+                                                id="email"
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Enter email"
+                                                name="email"
+                                        />
+                                    </div>
+
+                                    <!--Add Email Button-->
+                                    <div class="container text-center">
+                                        <button class="btn" formaction="/report/" name="send_email" style="background-color: #39B5E0;">
+                                            SEND REPORT TO EMAIL
+                                        </button>
+                                    </div>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+<html>
+<head>
+    <title>List</title>
+    {% block title %}
+    List
+    {% endblock title %}
+    {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/table.css' %}">
+    {% endblock script %}
+</head>
+
+<body>
+{% block content %}
+<section class="intro">
+    <div class="h-100">
+        <div class="mask d-flex align-items-center h-30">
+            <div class="container">
+                <a href="/schedule/add" class="btn btn-primary btn-sm">Add Schedule</a>
+                <form action="/schedule/list/" method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="from_date">Select Filter From Date</label>
+                        <input id="from_date" name="from_date" type="date" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="to_date">Select Filter To Date</label>
+                        <input id="to_date" name="to_date" type="date" class="form-control">
+                    </div>
+                    <div class="container text-center">
+                        <button class="btn" style="background-color: #39B5E0;">
+                            Search
+                        </button>
+                    </div>
+                </form>
+                {% if show_table %}
+                <div class=" text-center ">
+                    <h1>Shift Schedule Detail</h1>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div class="table-responsive bg-white">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">S.NO.</th>
+                                    <th scope="col">EMPLOYEE</th>
+                                    <th scope="col">LOCATION</th>
+                                    <th scope="col">DATE</th>
+                                    <th scope="col">FROM</th>
+                                    <th scope="col">TO</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for schedules in scheduler %}
+                                <tr>
+                                    <td style="color:black">{{forloop.counter}}</td>
+                                    <td style="color:black">{{schedules.employee.full_name}}</td>
+                                    <td style="color:black">{{schedules.location.name}}</td>
+                                    <td style="color:black">{{schedules.date}}</td>
+                                    <td style="color:black">{{schedules.from_time}}</td>
+                                    <td style="color:black">{{schedules.to_time}}</td>
+                                    <td>
+                                        <a href="/schedule/delete/{{schedules.id}}"
+                                           class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="/schedule/update/{{schedules.id}}"
+                                           class="btn btn-success btn-sm">Update</a>
+                                    </td>
+                                </tr>
+                                {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+</body>
+</html>

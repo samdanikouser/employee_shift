@@ -1,0 +1,77 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+<html>
+<head>
+    <title>List</title>
+    {% block title %}
+    List
+    {% endblock title %}
+    {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/table.css' %}">
+    {% endblock script %}
+</head>
+
+<body>
+{% block content %}
+<section class="intro">
+    <div class="h-100">
+        <div class="mask d-flex align-items-center h-30">
+            <div class="container">
+                    <a href="/employee/add" class="btn btn-primary btn-sm">Add Employee</a>
+                <div class=" text-center ">
+                    <h1>Employees Detail</h1>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div class="table-responsive bg-white">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">S.NO.</th>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">NAME</th>
+                                    <th scope="col">DOB</th>
+                                    <th scope="col">DEPARTMENT</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for e in emps %}
+                                <tr>
+                                    <td style="color:black">{{forloop.counter}}</td>
+                                    <td style="color:black" name="{{e.employee_id}}">{{e.employee_id}}</td>
+                                    <td style="color:black">{{e.full_name}}</td>
+                                    <td style="color:black">{{e.date_of_birth}}</td>
+                                    <td style="color:black">{{e.department.name}}</td>
+                                    <td>
+                                        <a href="/employee/delete/{{e.employee_id}}"
+                                           class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="/employee/update/{{e.employee_id}}"
+                                           class="btn btn-success btn-sm">Update</a>
+                                        {% if e.enrollment_status %}
+                                        <a href="/employee/checkin/{{e.employee_id}}"
+                                           name="checkin" class="btn btn-success btn-sm">Checkin</a>
+                                        {% else %}
+                                        <a href="/employee/enroll/{{e.employee_id}}" name="enroll"
+                                           class="btn btn-success btn-sm">Enroll</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+<html>
+<head>
+    <title>{% block title %}Login{% endblock %}</title>
+    <link rel="stylesheet" href="{% static '/css/login.css' %}">
+
+</head>
+<body>
+{% block content %}
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Employee Management Login</p>
+
+                <form method="GET" action="/facelogin/" class="uniForm" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
+                    <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+
+                        <button type="submit" class="btn btn-primary btn-floating mx-1">
+                            <i class="fa fa-camera"></i>
+                        </button>
+
+                    </div>
+                </form>
+                     <form method="POST" class="uniForm" style="border: 1px solid black; margin: 4%; padding:10%; border-radius:1%;">
+                    {% csrf_token %}
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="lead fw-normal mb-0 me-3">Sign in with UserName</p>
+                    </div>
+                    <fieldset class="form-group">
+                        {{ form|crispy}}
+                    </fieldset>
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login
+                        </button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="{% url 'signup' %}"
+                                                                                          class="link-danger">Register</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+        <!-- Copyright -->
+        <div class="text-white mb-3 mb-md-0">
+            Employee Shift Management
+        </div>
+        <!-- Copyright -->
+
+        <!-- Right -->
+    </div>
+</section>
+{% endblock content %}
+</body>
+</html>

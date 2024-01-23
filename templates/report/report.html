@@ -1,0 +1,53 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+<html>
+<head>
+    <title>List</title>
+    {% block title %}
+    List
+    {% endblock title %}
+    {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/table.css' %}">
+    {% endblock script %}
+</head>
+
+<body>
+{% block content %}
+<section class="intro">
+    <div class="h-100">
+        <div class="mask d-flex align-items-center h-30">
+            <div class="container">
+                <form action="/report/" method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="from_date">Select Filter From Date</label>
+                        <input id="from_date" name="from_date" type="date" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="to_date">Select Filter To Date</label>
+                        <input id="to_date" name="to_date" type="date" class="form-control">
+                    </div>
+                    <div class="container text-center">
+                            <button class="btn" name="email_popup"
+                                    style="background-color: #39B5E0;">
+                                Add Email
+                            </button>
+                            <button class="btn" name="report_generate"
+                                    style="background-color: #39B5E0;">
+                                Generate Report
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+</body>
+</html>

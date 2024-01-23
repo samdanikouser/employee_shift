@@ -1,0 +1,121 @@
+{% extends "vertical_menu.html" %}
+{% load static %}
+<html>
+<head>
+    <title>{% block title %}Add{% endblock %}</title>
+    {% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.js"></script>
+    <link href="https://cdn.datatables.net/v/bs4-4.1.1/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/r-2.2.6/datatables.min.css"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static '/css/form.css' %}">
+    <script>
+
+    var video;
+      function openCam(){
+         let All_mediaDevices=navigator.mediaDevices
+         if (!All_mediaDevices || !All_mediaDevices.getUserMedia) {
+            console.log("getUserMedia() not supported.");
+            return;
+         }
+         All_mediaDevices.getUserMedia({
+            video: true
+         })
+         .then(function(vidStream) {
+            video = document.getElementById('videoCam');
+            if ("srcObject" in video) {
+               video.srcObject = vidStream;
+            } else {
+               video.src = window.URL.createObjectURL(vidStream);
+            }
+            console.log(video, video.src, video.srcObject)
+            video.onloadedmetadata = function(e) {
+               video.play();
+            };
+         })
+         .catch(function(e) {
+            console.log(e.name + ": " + e.message);
+         });
+      }
+
+      function vidOff() {
+        video.pause();
+        video.src = "";
+        video.srcObject.getVideoTracks().forEach(track => track.enabled = false);
+        video.srcObject.getVideoTracks()[0].stop();
+    }
+
+    function capture() {
+        const videoCam = document.querySelector('#videoCam');
+        const emp_id = document.getElementById("emp_id").value;
+        console.log(emp_id)
+        console.log(videoCam, video.width, video.height)
+        const cnv = window.canvas = document.createElement('canvas')
+        cnv.width = videoCam.videoWidth;
+        cnv.height = videoCam.videoHeight;
+        cnv.getContext('2d').drawImage(videoCam, 0,0, cnv.width, cnv.height);
+
+        cnv.toBlob((blob) => {
+            var formDataToUpload = new FormData();
+            formDataToUpload.append("image", blob);
+            var request = new XMLHttpRequest();
+            request.open("POST", "/employee/enroll/"+emp_id);
+            request.send(formDataToUpload);
+
+            request.onreadystatechange = function() {
+                if (request.readyState == XMLHttpRequest.DONE) {
+                    console.log(request.responseText);
+                    if(request.responseText){
+                        let responseJSON = JSON.parse(request.responseText);
+                        if (responseJSON.status == 200) {
+                            window.location.href = '/employee/list'
+                        }
+                        else if (responseJSON.status == 400) {
+                            alert("Error: " + responseJSON.error)
+                        }
+                    }
+                    else {
+                        console.log("Server did not respond")
+                    }
+                }
+            }
+        });
+
+    }
+</script>
+
+    {% endblock script %}
+</head>
+
+<body>
+{% block content %}
+<div class="container">
+    <div class=" text-center mt-5 ">
+        <h1>Enroll Employee</h1>
+    </div>
+    <div class="row ">
+        <div class="col-lg-7 mx-auto">
+            <div class="card mt-2 mx-auto p-4 bg-light">
+                <div class="card-body bg-light">
+                    <div class="container">
+                        <div class="container text-center">
+                            <input name="emp_id" id="emp_id" hidden value="{{emp_id}}">
+                            <button class="btn btn-success" id="startBtn" onclick="openCam()">Open Webcam</button>
+                            <button class="btn btn-success" id="stopBtn" onclick="vidOff()">Close Webcam</button>
+                            <button class="btn btn-success" id="captureBtn" onclick="capture()">Enroll</button>
+                            <video width="320" height="240" id="videoCam"></video>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.8 -->
+        </div>
+        <!-- /.row-->
+    </div>
+</div>
+{% endblock content %}
+</body>
+</html>
+
