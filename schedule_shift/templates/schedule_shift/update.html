@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">Update {{scheduler.employee_details}}'s Schedule</h2>
+
+    <form action="/shiftSchedule/update/{{scheduler.id}}" method="POST">
+        {% csrf_token %}
+        <!--Employee Name-->
+        <div class="mb-3 ">
+            <label>Employee</label>
+            {{ form.employee_details}}
+        </div>
+
+        <div class="mb-3 ">
+            <label>Location</label>
+            {{ form.location}}
+        </div>
+
+        <div class="mb-3">
+            <label>Shift Date</label>
+            {{ form.date}}
+        </div>
+
+        <div class="mb-3">
+            <label>Shift From</label>
+            {{ form.from_time}}
+        </div>
+
+        <div class="mb-3">
+            <label>Shift Till</label>
+            {{ form.to_time}}
+        </div>
+
+        <div class="container text-center">
+            <button class="btn btn-success">
+                Update Schedule
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock content %}

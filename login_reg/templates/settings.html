@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+<!-- profile.html -->
+{% block content %}
+ <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">User Profile</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Username:</span>
+                                <span>{{ user_profile.user.username }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Email:</span>
+                                <span>{{ user_profile.user.email }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Bio:</span>
+                                <span>{{ user_profile.bio }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Location:</span>
+                                <span>{{ user_profile.location }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">Birth Date:</span>
+                                <span>{{ user_profile.birth_date }}</span>
+                            </li>
+                            <!-- Add other fields as needed -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+

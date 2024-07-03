@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Employees</h2>
+    <form action="/employee/add/" method="POST">
+        {% csrf_token %}
+        <!--Employee Name-->
+        <div class="mb-3">
+            <label>Employee name</label>
+            {{ form.full_name}}
+            {% if form.errors.full_name %}
+            <div class="alert alert-danger">
+                <strong> {{form.errors.full_name.as_text|cut:"* " }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label>Date of Birth</label>
+            {{ form.date_of_birth}}
+            {% if form.errors.date_of_birth %}
+            <div class="alert alert-danger">
+                <strong>{{form.errors.date_of_birth.as_text|cut:"* " }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <!--Departments-->
+        <div class="mb-3 ">
+            <label>Departments</label>
+            {{ form.department}}
+        </div>
+        <div class="container text-center">
+            <button class="btn btn-success">
+                Add Details
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

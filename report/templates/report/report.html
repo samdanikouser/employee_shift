@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li
+    {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<section class="intro">
+    <div class="h-100">
+        <div class="mask d-flex align-items-center h-30">
+            <div class="container">
+                <div class=" text-center ">
+                    <h1>Generate CSV and Email</h1>
+                </div>
+
+                <form id="generate-csv-email-form" method="post" action="{% url 'generate_csv_email' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="start_date">Select Start Date</label>
+                        <input id="start_date" name="start_date" type="date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date">Select End Date</label>
+                        <input id="end_date" name="end_date" type="date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email">Enter the email Address</label>
+                        <input id="email" name="email" type="text" class="form-control">
+                    </div>
+                    <div class="container text-center">
+                        <button class="btn" name="action"
+                                style="background-color: #39B5E0;" value="send_email">
+                            Send Email
+                        </button>
+                        <button class="btn" name="action"
+                                style="background-color: #39B5E0;" value="generate_csv">
+                            Generate Report
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

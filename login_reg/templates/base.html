@@ -1,0 +1,97 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shift Schedule{% endblock %}</title>
+
+    <!-- Include Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Include jQuery from code.jquery.com CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet">
+     <link rel="stylesheet" href="{% static 'login_reg/css/styles.css' %}">
+    <style>
+        .text-color {
+          color: azure;; /* Example color (tomato) */
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success navbar-fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand " href="#">Shift Schedule</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text-color" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-color" href="#" id="Schedule" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Shift Schedule
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'scheduleList' %}">Schedule List</a></li>
+                        <li><a class="dropdown-item" href="{% url 'addSchedule' %}">Schedule Shift</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'report' %}">Generate report/send email</a></li>
+
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-color" href="#" id="employee" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Employee
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><span class="dropdown-header">Employees</span></li>
+                        <li><a class="dropdown-item" href="{% url 'employeeList' %}">Show Employees</a></li>
+                        <li><a class="dropdown-item" href="{% url 'addEmployee' %}">Add Employee</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><span class="dropdown-header">Location</span></li>
+                        <li><a class="dropdown-item" href="{% url 'locationList' %}">Show Locations</a></li>
+                        <li><a class="dropdown-item" href="{% url 'addLocation' %}">Add Location</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><span class="dropdown-header">Department</span></li>
+                        <li><a class="dropdown-item" href="{% url 'departmentList' %}">Show Departments</a></li>
+                        <li><a class="dropdown-item" href="{% url 'addDepartment' %}">Add Department</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right-aligned items -->
+        <div class="d-flex">
+            <a href="{% url 'settings' %}" class="btn btn-outline-light mx-2"><i class="bi bi-person"></i></a>
+            <a href="{% url 'logout' %}" class="btn btn-outline-light mx-2"><i class="bi bi-box-arrow-in-right"></i>
+                Logout</a>
+
+            <!-- Add more buttons or elements as needed -->
+        </div>
+    </div>
+</nav>
+<div>
+    {% block content %}{% endblock %}
+</div>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

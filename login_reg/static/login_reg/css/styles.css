@@ -1,0 +1,32 @@
+/* styles.css */
+
+.messages {
+    list-style-type: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.messages li {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-left: 5px solid #28a745;  /* Green border for success messages */
+    background-color: #f0f0f0;  /* Light background color */
+}
+
+.messages li.success {
+    border-color: #218838;  /* Darker green border for success messages */
+    background-color: #d4edda;  /* Light green background color */
+    color: #218838;  /* Dark green text color */
+}
+
+@media (min-width: 1400px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: none;
+    }
+}
+
+.custom-navbar {
+    background-color: #ff6347; /* Example color (tomato) */
+  }

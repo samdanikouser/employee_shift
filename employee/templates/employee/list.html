@@ -1,0 +1,77 @@
+{% extends 'base.html' %}  {# Assuming you have a base template #}
+
+{% block content %}
+<div class="container  mt-5">
+    <h2 class="text-center mb-4">Employees Detail</h2>
+    <div class="row mb-3">
+        <div class="col-sm-6">
+            <form method="get" class="form-inline form-control" style="width: max-content;">
+                {{ item_filter.form.employee_id.label_tag }}
+                {{ item_filter.form.employee_id }}
+                {{ item_filter.form.full_name.label_tag }}
+                {{ item_filter.form.full_name }}
+                {{ item_filter.form.date_of_birth.label_tag }}
+                {{ item_filter.form.date_of_birth }}
+                {{ item_filter.form.department.label_tag }}
+                {{ item_filter.form.department }}
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-center"> {# Center align the table #}
+
+        <table class="table ">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">NAME</th>
+                <th scope="col">DOB</th>
+                <th scope="col">DEPARTMENT</th>
+                <th scope="col">ACTION</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for e in items %}
+            <tr>
+                <td style="color:black" name="{{e.employee_id}}">{{e.employee_id}}</td>
+                <td style="color:black">{{e.full_name}}</td>
+                <td style="color:black">{{e.date_of_birth}}</td>
+                <td style="color:black">{{e.department.name}}</td>
+                <td>
+                    <a href="/employee/delete/{{e.employee_id}}"
+                       class="btn btn-danger btn-sm">Delete</a>
+                    <a href="/employee/update/{{e.employee_id}}"
+                       class="btn btn-success btn-sm">Update</a>
+                </td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+    </div>
+    {% if items.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if items.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" tabindex="-1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% for num in items.paginator.page_range %}
+            <li class="page-item {% if num == items.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+            {% if items.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ items.paginator.num_pages }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

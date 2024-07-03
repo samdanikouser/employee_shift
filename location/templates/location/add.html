@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Location</h2>
+    <form action="/location/add/" method="POST">
+        {% csrf_token %}
+        <!--Employee Name-->
+        <div class="mb-3">
+            <label> Location Name</label>
+            {{ form.name}}
+            {% if form.errors.name %}
+            <div class="alert alert-danger">
+                <strong> {{form.errors.name.as_text|cut:"* " }}</strong>
+            </div>
+            {% endif %}
+        </div>
+        <div class="container text-center">
+            <button class="btn btn-success">
+                Add Location
+            </button>
+        </div>
+    </form>
+
+</div>
+{% endblock content %}
