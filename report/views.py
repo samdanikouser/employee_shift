@@ -34,6 +34,7 @@ def generate_csv_email(request):
             writer.writerow(["Employee Id", "Name", "Department", "Location", "From Date", "From Time", "To Time"])
             for schedule_id in queryset:
                 report_schedule_list = EmployeeShift.objects.get(pk=schedule_id.id)
+                print(report_schedule_list)
                 writer.writerow([report_schedule_list.id, report_schedule_list.employee_details.full_name,
                                  report_schedule_list.employee_details.department.name,
                                  report_schedule_list.location.name, report_schedule_list.date,
