@@ -9,13 +9,14 @@ from django.shortcuts import render, redirect
 from .filters import EmployeeShiftFilter
 from employee.models import Employee
 from location.models import Locations
-from schedule_shift.forms import EmployeeShiftForm, DateRangeForm
+from schedule_shift.forms import EmployeeShiftForm, DateRangeForm, AddScheduleForm
 from schedule_shift.models import EmployeeShift
 from django.core.paginator import Paginator
 
 
 @login_required
 def schedule_list(request):
+    """fUNCTION FOR VIEWING LIST OF SCHEDULE ON THE MENTIONED DATE RANGE"""
     show_table = False
     page_obj = None
     from_date = None
@@ -56,51 +57,36 @@ def schedule_list(request):
 
 @login_required
 def add_schedule(request):
-    employees_scheduler = Employee.objects.all()
-    from_date = None
-    to_date = None
-    from_time = None
-    to_time = None
-    location =None
-
-    if request.method == "GET":
-        from_date = request.GET.get("from_date")
-        to_date = request.GET.get("to_date")
-        from_time = request.GET.get("from_time")
-        to_time = request.GET.get("to_time")
-        location = request.GET.get("location")
-    print(request.GET)
-    # Pagination
-    paginator = Paginator(employees_scheduler, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    location = Locations.objects.all()
+    """fUNCTION TO CREATE SHIFT TO EMPLOYEES"""
+    form = AddScheduleForm()
     if request.method == "POST":
-        from_date = datetime.strptime(request.POST.get("from_date"), '%Y-%m-%d')
-        to_date = datetime.strptime(request.POST.get("to_date"), '%Y-%m-%d')
-        from_time = request.POST.get("from_time")
-        to_time = request.POST.get("to_time")
-        location = request.POST.get("location")
-        employee_list = request.POST.getlist("checks")
-        date = from_date
-        while date <= to_date:
-            for employee_id in employee_list:
-                EmployeeShift.objects.create(date=date,from_time=from_time,to_time = to_time,
-                                             location=Locations.objects.get(name=location),
-                                             employee_details = Employee.objects.get(employee_id=employee_id),
-                                             )
-            date += timedelta(days=1)
-        messages.success(request, f'Scheduled Successfully!')
-        return redirect("/shiftSchedule/add/")
+        form = AddScheduleForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+            from_date = form.cleaned_data['from_date']
+            to_date = form.cleaned_data['to_date']
+            from_time = form.cleaned_data['from_time']
+            to_time = form.cleaned_data['to_time']
+            location = form.cleaned_data['location']
+            employee_details = form.cleaned_data['employee_details']
+            date = from_date
+            while date <= to_date:
+                for employee_id in employee_details:
+                    EmployeeShift.objects.create(date=date, from_time=from_time, to_time=to_time,
+                                                 location=Locations.objects.get(name=location),
+                                                 employee_details = employee_id,
+                                                 )
+                date += timedelta(days=1)
+            messages.success(request, f'Scheduled Successfully!')
+            return redirect("/shiftSchedule/add/")
     return render(request, "schedule_shift/add.html",
-                  {'employees_scheduler': page_obj, 'location': location,'from_date':from_date,
-                   "to_date":to_date,"from_time":from_time,"to_time":to_time})
+                  {'form': form})
 
 
 # schedule delete function
 @login_required
 def delete_schedule(request, id):
-    # listings/views.py
+    """FUNCTION TO DELETE A SHIFT"""
     scheduler = EmployeeShift.objects.get(pk=id)
     if request.method == "POST":
         scheduler.delete()
@@ -113,6 +99,7 @@ def delete_schedule(request, id):
 # update schedule
 @login_required
 def update_schedule(request, id):
+    """FUNCTION TO UPDATE THE SCHEDULING of single employees """
     scheduler = EmployeeShift.objects.get(pk=id)
     if request.method == "POST":
         form = EmployeeShiftForm(request.POST, instance=scheduler)

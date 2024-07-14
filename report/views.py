@@ -10,11 +10,13 @@ from schedule_shift.models import EmployeeShift
 
 @login_required
 def report(request):
+    """Report generating page"""
     return render(request, "report/report.html")
 
 
 @login_required
 def generate_csv_email(request):
+    """CSV generating code"""
     if request.method == 'POST':
         start_date = request.POST.get('start_date', '')
         end_date = request.POST.get('end_date', '')
@@ -43,6 +45,7 @@ def generate_csv_email(request):
             return response
 
         elif action == 'send_email':
+            """EMAIL generating code"""
             email_address = request.POST.get('email')
             # Generate CSV file in memory
             csv_data = []

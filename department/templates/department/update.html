@@ -4,10 +4,11 @@
     <h2 class="text-center mb-4">Update {{department.name}}'s Details</h2>
     <form action="/department/update/{{department.id}}" method="POST">
         {% csrf_token %}
-        <!--Employee Name-->
+        <!--Department Name-->
         <div class="mb-3">
             <label>Department name</label>
             {{ form.name}}
+            <!-- show error message if any -->
             {% if form.errors.name %}
             <div class="alert alert-danger">
                 <strong> {{form.errors.name.as_text|cut:"* " }}</strong>

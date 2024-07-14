@@ -4,7 +4,8 @@
 <ul class="messages">
     {% for message in messages %}
     <li
-    {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+    </li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -17,85 +18,61 @@
             <div class="card mt-2 mx-auto p-4 bg-light">
                 <div class="card-body bg-light">
                     <div class="container">
+                        {% if form.errors.from_date %}
+                        <div class="alert alert-danger">
+                            <strong>{{form.errors.from_date.as_text|cut:"* " }}</strong>
+                        </div>
+                        {% endif %}
                         <form action="/shiftSchedule/add/" method="POST">
                             {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="from_date">From Date</label>
-                                <input id="from_date" name="from_date" type="date" class="form-control" value="{{from_date}}">
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="from_date">From Date</label>
+                                    {{form.from_date}}
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="to_date">To Date</label>
+                                    {{form.to_date}}
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="from_time">From Time</label>
+                                    {{form.from_time}}
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="to_time">To Time</label>
+                                    {{form.to_time}}
+                                </div>
+                                <!--location-->
+                                <div class="mb-3 ">
+                                    <label for="location">Location</label>
+                                    {{form.location}}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="to_date">To Date</label>
-                                <input id="to_date" name="to_date" type="date" class="form-control" value="{{to_date}}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="from_time">From Time</label>
-                                <input id="from_time" name="from_time" type="time" class="form-control" value="{{from_time}}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="to_time">To Time</label>
-                                <input id="to_time" name="to_time" type="time" class="form-control" value="{{to_time}}">
-                            </div>
-                            <!--location-->
                             <div class="mb-3 ">
-                                <label for="location">Location</label>
-                                <select name="location" id="location" class="form-control">
-                                    {% for data in location %}
-                                    <option value="{{data.name}}">{{data.name}}</option>
-                                    {% endfor %}
-                                </select>
+                                {% if form.errors.employee_details %}
+                                <div class="alert alert-danger">
+                                    <strong>{{form.errors.employee_details.as_text|cut:"* " }}</strong>
+                                </div>
+                                {% endif %}
+                                <label for="employee_details">Select Employees:</label>
+                                <table class="table table-light table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>NAME(EMP ID)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for e in form.employee_details %}
+                                    <tr>
+                                        <td>{{ e }}</td>
+                                    </tr>
+                                    {%endfor%}
+                                    </tbody>
+                                </table>
+                                <!--Add Employee schedule Button-->
                             </div>
-                            <table class="table table-light table-striped table-hover">
-                                <thead>
-                                <tr>
-                                    <th>SELECT</th>
-                                    <th>EMP ID</th>
-                                    <th>NAME</th>
-                                    <th>DEPARTMENT</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for e in employees_scheduler %}
-                                <tr>
-                                    <td><input type="checkbox" name="checks" value="{{e.employee_id}}"/>&nbsp;</td>
-                                    <td>{{e.employee_id}}</td>
-                                    <td>{{e.full_name}}</td>
-                                    <td>{{e.department}}</td>
-                                </tr>
-                                {%endfor%}
-                                </tbody>
-                            </table>
-                            {% if employees_scheduler.has_other_pages %}
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    {% if employees_scheduler.has_previous %}
-                                    <li class="page-item">
-                                        <a class="page-link" id="prev-link" onclick="updatePrevHref()" href="?page=1"
-                                           tabindex="-1" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    {% endif %}
-                                    {% for num in employees_scheduler.paginator.page_range %}
-                                    <li class="page-item {% if num == employees_scheduler.number %}active{% endif %}">
-                                        <a class="page-link" id="active-link" onclick="updateActiveHref()"
-                                           href="?page={{ num }}">{{ num }}</a>
-                                    </li>
-                                    {% endfor %}
-                                    {% if employees_scheduler.has_next %}
-                                    <li class="page-item">
-                                        <a class="page-link" id="next-link" onclick="updateNextHref()"
-                                           href="?page={{ employees_scheduler.paginator.num_pages }}"
-                                           aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                    {% endif %}
-                                </ul>
-                            </nav>
-                            {% endif %}
-                            <!--Add Employee schedule Button-->
                             <div class="container text-center">
-                                <button class="btn" style="background-color: #39B5E0;">
+                                <button type="submit" class="btn" style="background-color: #39B5E0;">
                                     Schedule
                                 </button>
                             </div>
@@ -110,38 +87,4 @@
         <!-- /.row-->
     </div>
 </div>
-
-<script>
-    function updatePrevHref() {
-            var from_date = document.getElementById('from_date').value;
-            var to_date = document.getElementById('to_date').value;
-            var from_time = document.getElementById('from_time').value;
-            var to_time = document.getElementById('to_time').value;
-            var location = document.getElementById('location').value;
-            var prev_link = document.getElementById('prev-link').href;
-            var linkToAdd = "&from_date="+from_date+"&to_date="+to_date+"&from_time="+from_time+"&to_time="+to_time+"&location="+location
-            document.getElementById('prev-link').href = prev_link+linkToAdd;
-    }
-function updateActiveHref() {
-        var from_date = document.getElementById('from_date').value;
-        var to_date = document.getElementById('to_date').value;
-        var from_time = document.getElementById('from_time').value;
-        var to_time = document.getElementById('to_time').value;
-        var location = document.getElementById('location').value;
-        var active_link = document.getElementById('active-link').href;
-        var linkToAdd = "&from_date="+from_date+"&to_date="+to_date+"&from_time="+from_time+"&to_time="+to_time+"&location="+location
-        alert(active_link+linkToAdd)
-        document.getElementById('active-link').href = active_link+linkToAdd;
-    }
-function updateNextHref() {
-        var from_date = document.getElementById('from_date').value;
-        var to_date = document.getElementById('to_date').value;
-        var from_time = document.getElementById('from_time').value;
-        var to_time = document.getElementById('to_time').value;
-        var location = document.getElementById('location').value;
-        var next_link = document.getElementById('next-link').href;
-        var linkToAdd = "&from_date="+from_date+"&to_date="+to_date+"&from_time="+from_time+"&to_time="+to_time+"&location="+location
-        document.getElementById('next-link').href = next_link+linkToAdd;
-    }
-</script>
 {% endblock content %}

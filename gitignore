@@ -23,3 +23,7 @@ env/
 *.log
 *.pid
 *.pyc
+
+# Ignore Django migration files
+**/migrations/*.py
+**/migrations/*.pyc

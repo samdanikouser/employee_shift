@@ -6,6 +6,10 @@ import datetime
 
 
 class EmployeeForm(ModelForm):
+    """Form that is used for Create,update of employee
+        which is passed to template file where we need not code
+         in html file explicitly as we can validate the data
+          if required using form and show errors if any"""
     full_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control", 'name': "name"}),
                                 error_messages={'required': "Please Enter your Name "})
     department = forms.ModelChoiceField(queryset=Department.objects.all(),
@@ -20,11 +24,14 @@ class EmployeeForm(ModelForm):
     }))
 
     class Meta:
+        """specifies the model on which the form operate and the list of fields"""
         model = Employee
-
         fields = ["full_name", "date_of_birth", "department"]
 
     def clean(self):
+        """ used to perform validation that requires access to
+        multiple fields of a form or a model instance,
+        where employee age should be more than 20 and must have name with at least 5 char"""
         super(EmployeeForm, self).clean()
 
         year = datetime.datetime.today().year

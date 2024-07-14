@@ -7,9 +7,10 @@ from location.models import Locations
 from django.core.paginator import Paginator
 
 
-# list employee loc function
+# list employee location function
 @login_required
 def location_list(request):
+    """Function to display all the location """
     location = Locations.objects.all()
     # Apply filters
     item_filter = LocationFilter(request.GET, queryset=location)
@@ -34,6 +35,7 @@ def location_list(request):
 # add employee loc function
 @login_required
 def add_location(request):
+    """Function to add the location ,on successfully adding redirect to list view else to add template file """
     if request.method == "POST":
         form = LocationForm(request.POST)
         if form.is_valid():
@@ -49,7 +51,7 @@ def add_location(request):
 # employee loc delete function
 @login_required
 def delete_location(request, id):
-    # listings/views.py
+    """Delete location based on ID"""
     location = Locations.objects.get(pk=id)
     if request.method == "POST":
         location.delete()
@@ -62,6 +64,7 @@ def delete_location(request, id):
 # update location
 @login_required
 def update_location(request, id):
+    """Update location based on ID and redirect to list view if not remains in update page """
     location = Locations.objects.get(pk=id)
     if request.method == "POST":
         print(request.POST)

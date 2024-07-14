@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage
 from schedule_shift.models import EmployeeShift
 
 class Command(BaseCommand):
+    """Function to send email on daily bases"""
     help = 'Generates daily report of employee shifts and sends it via email.'
 
     def handle(self, *args, **kwargs):

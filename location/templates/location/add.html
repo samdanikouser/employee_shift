@@ -4,10 +4,11 @@
     <h2 class="text-center mb-4">Add Location</h2>
     <form action="/location/add/" method="POST">
         {% csrf_token %}
-        <!--Employee Name-->
+        <!--location Name-->
         <div class="mb-3">
             <label> Location Name</label>
             {{ form.name}}
+            <!-- Show error if any-->
             {% if form.errors.name %}
             <div class="alert alert-danger">
                 <strong> {{form.errors.name.as_text|cut:"* " }}</strong>

@@ -9,6 +9,7 @@ from .models import Employee
 
 @login_required
 def employee_list(request):
+    """To display all the employee details"""
     emps = Employee.objects.all()
 
     # Apply filters
@@ -34,6 +35,8 @@ def employee_list(request):
 # add employee function
 @login_required
 def add_employee(request):
+    """For adding the employee details, where data is passed to the
+     function from the form and then validated and if valid stored in DB"""
     department = Department.objects.all()
     if request.method == "POST":
         form = EmployeeForm(request.POST)
@@ -50,7 +53,7 @@ def add_employee(request):
 # employee delete function
 @login_required
 def delete_emp(request, emp_id):
-    # listings/views.py
+    """Delete employee data based on ID """
     emp = Employee.objects.get(pk=emp_id)
     if request.method == "POST":
         emp.delete()
@@ -63,6 +66,7 @@ def delete_emp(request, emp_id):
 # update employee
 @login_required
 def update_emp(request, emp_id):
+    """Update employee data based on ID and redirect to list view if not to the update page """
     emp = Employee.objects.get(pk=emp_id)
     if request.method == "POST":
         form = EmployeeForm(request.POST, instance=emp)

@@ -6,6 +6,7 @@ from location.models import Locations
 
 
 class EmployeeShift(models.Model):
+    """Shift model for storing the shift details of employee"""
     id = models.AutoField(primary_key=True)
     employee_details = models.ForeignKey(Employee, on_delete=models.CASCADE)
     location = models.ForeignKey(Locations, on_delete=models.CASCADE)
@@ -16,4 +17,6 @@ class EmployeeShift(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        """string representation of the object"""
         return f'{self.employee_details} - {self.date}'
+
